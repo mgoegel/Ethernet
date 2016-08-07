@@ -27,10 +27,14 @@ public:
   void begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet);
   int maintain();
 
+  void hostName(char *dhcp_HostName);
+  char* getHostName();
+
   IPAddress localIP();
   IPAddress subnetMask();
   IPAddress gatewayIP();
   IPAddress dnsServerIP();
+  IPAddress vendorServerIP();
 
   friend class EthernetClient;
   friend class EthernetServer;

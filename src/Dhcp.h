@@ -44,7 +44,7 @@
 #define MAGIC_COOKIE		0x63825363
 #define MAX_DHCP_OPT	16
 
-#define HOST_NAME "WIZnet"
+// #define HOST_NAME "WIZnet"
 #define DEFAULT_LEASE	(900) //default lease time in seconds
 
 #define DHCP_CHECK_NONE         (0)
@@ -97,9 +97,9 @@ enum
 	tcpKeepaliveGarbage	=	39,
 	nisDomainName		=	40,
 	nisServers		=	41,
-	ntpServers		=	42,
+	ntpServers		=	42,*/
 	vendorSpecificInfo	=	43,
-	netBIOSnameServer	=	44,
+  /*netBIOSnameServer	=	44,
 	netBIOSdgramDistServer	=	45,
 	netBIOSnodeType		=	46,
 	netBIOSscope		=	47,
@@ -115,7 +115,7 @@ enum
 	dhcpMaxMsgSize		=	57,*/
 	dhcpT1value		=	58,
 	dhcpT2value		=	59,
-	/*dhcpClassIdentifier	=	60,*/
+	dhcpClassIdentifier	=	60,
 	dhcpClientIdentifier	=	61,
 	endOption		=	255
 };
@@ -146,6 +146,7 @@ private:
   uint8_t  _dhcpGatewayIp[4];
   uint8_t  _dhcpDhcpServerIp[4];
   uint8_t  _dhcpDnsServerIp[4];
+  uint8_t  _dhcpVendorServerIp[4];
   uint32_t _dhcpLeaseTime;
   uint32_t _dhcpT1, _dhcpT2;
   unsigned long _renewInSec;
@@ -169,9 +170,12 @@ public:
   IPAddress getGatewayIp();
   IPAddress getDhcpServerIp();
   IPAddress getDnsServerIp();
+  IPAddress getVendorServerIp();
   
   int beginWithDHCP(uint8_t *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
   int checkLease();
+  void setHostName(char *);
+  char * getHostName();
 };
 
 #endif
