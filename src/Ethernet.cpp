@@ -95,6 +95,7 @@ int EthernetClass::maintain(){
         break;
       case DHCP_CHECK_RENEW_OK:
       case DHCP_CHECK_REBIND_OK:
+      case DHCP_CHECK_LEASE_OK:
         //we might have got a new IP.
         SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
         W5100.setIPAddress(_dhcp->getLocalIp().raw_address());

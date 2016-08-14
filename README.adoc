@@ -1,9 +1,45 @@
-= Ethernet Library for Arduino =
+= Modified Ethernet Library for Arduino =
 
 With the Arduino Ethernet Shield, this library allows an Arduino board to connect to the internet.
 
 For more information about this library please visit us at
 http://www.arduino.cc/en/Reference/Ethernet
+
+== Modifications made by mgoegel ==
+
+This is a modified version for my own purpose. Someone may find this useful.
+
+Modifications done at this time:
+
+ - fixed a bug wich may cause to hang at boot, while parsing DHCP replies:
+   If mutliple replies are in the W5100 buffer (maybe >1 DHCP servers), then
+   the code empties the buffer now, after parsing the first packet - just one
+   server wins.
+ - added implementation for VendorSpecificInformations parsing (OPTION 43)
+   ISC DHCPD example:
+
+    option space MYARDUINO;
+    option MYARDUINO.appserv code 1 = ip-address;
+    option local-encapsulation code 43 = encapsulate MYARDUINO;
+
+    # define a pool in your subnet
+    pool {
+      range 10.1.11.91 10.1.11.99;
+
+      vendor-option-space MYARDUINO;
+      option MYARDUINO.appserv 10.1.1.12;
+    }
+ - added support for VendorClassIdentifier (OPTION 60)
+ - made DHCP REQUESTS a non blocking operation.
+   This could require code changes:
+
+   Ethernet.begin(mac) will return 2 (or 0 when socket could not be created)
+    which means, request is sent
+   Ethernet.maintain() will return 6 (DHCP_CHECK_LEASE_OK), when a lease is
+    received. As long there's no IP, Ethernet.maintain() returns 0
+    (DHCP_CHECK_NONE)
+   There is still a minor problem, as the first DHCP RQUEST isn't sent to the
+   network, the second one will made it's way. Have to check this.
 
 == License ==
 

@@ -52,6 +52,8 @@
 #define DHCP_CHECK_RENEW_OK     (2)
 #define DHCP_CHECK_REBIND_FAIL  (3)
 #define DHCP_CHECK_REBIND_OK    (4)
+#define DHCP_CHECK_LEASE_FAIL   (5)
+#define DHCP_CHECK_LEASE_OK     (6)
 
 enum
 {
@@ -154,10 +156,12 @@ private:
   unsigned long _timeout;
   unsigned long _responseTimeout;
   unsigned long _lastCheckLeaseMillis;
+  unsigned long _startTimeRequest; //mg
   uint8_t _dhcp_state;
   EthernetUDP _dhcpUdpSocket;
   
   int request_DHCP_lease();
+  int request_DHCP_lease_loop(); //mg
   void reset_DHCP_lease();
   void presend_DHCP();
   void send_DHCP_MESSAGE(uint8_t, uint16_t);
